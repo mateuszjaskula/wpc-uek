@@ -7,7 +7,7 @@
       - git
       - tree
       - mc
-    bucket_name: "205225-jskl"
+    bucket_name: "204225-jskl"
     python_dependencies:
       - boto3
       - pytest
