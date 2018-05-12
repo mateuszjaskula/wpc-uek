@@ -8,6 +8,10 @@
       - tree
       - mc
     bucket_name: "205225-jskl"
+    python_dependencies:
+      - boto3
+      - pytest
+      - flask
   tasks:
     - name: "Install os packages"
       yum:
@@ -17,7 +21,7 @@
       become: yes
     - name: "sync my repo"
       git:
-        repo: https://bitbucket.org/mateuszjaskula/ani-creator.git
+        repo: https://github.com/mateuszjaskula/wpc-uek.git
         dest: ~/ani-creator
     - name: "ensure env is configured"
       lineinfile:
@@ -25,4 +29,9 @@
         line: "export APP_BUCKET_NAME={{bucket_name}}"
     - name: "config git user"
       raw: git config --global user.name "Mateusz Jaskula"
-    - raw: git config --globel user.email "jaskula92@gmail.com"
+    - raw: git config --global user.email "jaskula92@gmail.com"
+    - pip:
+        name: "{{ item }}"
+      with_items: "{{ python_dependencies }}"
+      executable: pip3.6
+      become: yes
