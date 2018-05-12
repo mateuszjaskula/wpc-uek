@@ -1,0 +1,28 @@
+---
+- hosts: web_nodes
+  vars:
+    os_packages:
+      - python36
+      - python36-pip
+      - git
+      - tree
+      - mc
+    bucket_name: "205225-jskl"
+  tasks:
+    - name: "Install os packages"
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ os_packages }}"
+      become: yes
+    - name: "sync my repo"
+      git:
+        repo: https://bitbucket.org/mateuszjaskula/ani-creator.git
+        dest: ~/ani-creator
+    - name: "ensure env is configured"
+      lineinfile:
+        path: ~/.bashrc
+        line: "export APP_BUCKET_NAME={{bucket_name}}"
+    - name: "config git user"
+      raw: git config --global user.name "Mateusz Jaskula"
+    - raw: git config --globel user.email "jaskula92@gmail.com"
