@@ -1,4 +1,5 @@
 import unittest
+import os, boto3
 from media.s3_storage import S3MediaStorage 
 class TestS3Storage(unittest.TestCase):
 
@@ -16,7 +17,9 @@ class TestS3Storage(unittest.TestCase):
     assert storage.contains(path='my/test/path.txt')
   
   def there_is_s3_storage(self):
-    return S3MediaStorage()
+    s3 = boto3.resource('s3')
+    bucket_name = os.getenv('APP_BUCKET_NAME')
+    return S3MediaStorage(s3, bucket_name)
   
   def there_is_file(self):
     pass
